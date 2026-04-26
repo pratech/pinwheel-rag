@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "problem": "Robot not moving",
+    "keywords": ["motor not working", "robot not moving", "wheels not rotating"],
+    "solution": "Check battery voltage and verify L298N connections."
+  },
+  {
+    "id": 2,
+    "problem": "Bluetooth not connecting",
+    "keywords": ["bluetooth issue", "hc05 not pairing"],
+    "solution": "Check HC-05 connections and pairing mode."
+  },
+  {
+    "id": 3,
+    "problem": "Line follower not detecting line",
+    "keywords": ["sensor issue", "line not detected"],
+    "solution": "Adjust threshold and recalibrate sensors."
+  }
+]

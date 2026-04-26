@@ -141,3 +141,18 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Environment variables
+.env
+
+# FAISS index (generated)
+index.faiss
+
+# Metadata (generated from embeddings)
+metadata.json
+
+# Optional: logs / temp
+*.log
+
+# Large data files
+data/*.backup.json

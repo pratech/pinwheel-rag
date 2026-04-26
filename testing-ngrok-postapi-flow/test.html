@@ -1,32 +1,117 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <title>Pinwheel Robotics Assistant</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f5f5f5;
+    }
+
+    #chat {
+      width: 400px;
+      height: 500px;
+      border: 1px solid #ccc;
+      background: white;
+      margin: 20px auto;
+      padding: 10px;
+      overflow-y: auto;
+    }
+
+    .msg {
+      margin: 10px 0;
+    }
+
+    .user {
+      text-align: right;
+      color: blue;
+    }
+
+    .bot {
+      text-align: left;
+      color: green;
+    }
+
+    #inputArea {
+      width: 400px;
+      margin: auto;
+      display: flex;
+    }
+
+    input {
+      flex: 1;
+      padding: 10px;
+    }
+
+    button {
+      padding: 10px;
+    }
+  </style>
+</head>
+
 <body>
 
-<h2>Test API</h2>
-<button onclick="callAPI()">Test Robot API</button>
+<h2 style="text-align:center;">🤖 Robotics Assistant</h2>
 
-<pre id="output"></pre>
+<div id="chat"></div>
+
+<div id="inputArea">
+  <input id="input" placeholder="Ask your question..." />
+  <button onclick="send()">Send</button>
+</div>
 
 <script>
-function callAPI() {
-  fetch("https://licking-unstitch-hardly.ngrok-free.dev/chat", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      message: "My robot is not moving",
-      sessionId: "test123"
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    document.getElementById("output").innerText = JSON.stringify(data, null, 2);
-  })
-  .catch(err => {
-    document.getElementById("output").innerText = err;
-  });
+const API_URL = "https://licking-unstitch-hardly.ngrok-free.dev/chat"; // 🔥 replace this
+const sessionId = "user-1"; // simple session
+
+function addMessage(text, type) {
+  const div = document.createElement("div");
+  div.className = "msg " + type;
+  div.innerText = text;
+  document.getElementById("chat").appendChild(div);
+  document.getElementById("chat").scrollTop = 9999;
 }
+
+async function send() {
+  const input = document.getElementById("input");
+  const message = input.value;
+
+  if (!message) return;
+
+  addMessage(message, "user");
+  input.value = "";
+
+  addMessage("Thinking...", "bot");
+
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message,
+        sessionId
+      })
+    });
+
+    const data = await res.json();
+
+    // remove "Thinking..."
+    document.getElementById("chat").lastChild.remove();
+
+    addMessage(data.reply, "bot");
+
+  } catch (err) {
+    document.getElementById("chat").lastChild.remove();
+    addMessage("Error: Unable to reach server", "bot");
+  }
+}
+
+// Enter key support
+document.getElementById("input").addEventListener("keypress", function(e) {
+  if (e.key === "Enter") send();
+});
 </script>
 
 </body>

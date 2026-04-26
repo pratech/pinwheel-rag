@@ -18,7 +18,7 @@ let sessions = {};
 
 app.post("/chat", async (req, res) => {
   const { message, sessionId } = req.body;
-
+    console.log("📩 Incoming request:", message);
   if (!initialized) {
     console.log("🔧 Building index...");
     await buildIndex();
@@ -66,4 +66,5 @@ app.post("/chat", async (req, res) => {
 
 app.listen(3000, () => {
   console.log("🚀 Server running on http://localhost:3000");
+ 
 });

@@ -1,259 +1,239 @@
 # 🤖 Pinwheel RAG – Robotics Teaching & Troubleshooting Assistant
 
+---
+
 ## 🚀 Overview
 
-Pinwheel RAG is a backend-first AI system designed to assist **teachers and students in robotics learning and troubleshooting**.
+Pinwheel RAG is an AI-powered backend system designed to assist **teachers and students in robotics learning and troubleshooting**.
 
 It combines:
 
 * Retrieval-Augmented Generation (RAG)
 * Structured robotics knowledge
 * Controlled LLM responses
-* Rule-based + AI-driven troubleshooting
-
-The goal is to build a **reliable, classroom-ready robotics assistant** that can:
-
-* Explain concepts
-* Troubleshoot hardware issues
-* Guide step-by-step debugging
+* Interactive troubleshooting flows
 
 ---
 
 ## 🧠 What It Does
 
-### ✅ 1. Semantic Knowledge Retrieval (RAG)
+### ✅ Semantic Search (RAG)
 
-* Uses embeddings to understand user queries
-* Retrieves the most relevant robotics problem/solution
-* Works even with varied phrasing (e.g., “robot not moving” → “motor issue”)
-
----
-
-### ✅ 2. Controlled AI Responses
-
-* Uses LLM only with retrieved context
-* Prevents hallucination with strict prompt rules
-* Generates structured, teacher-friendly output
+* Finds relevant robotics issues using embeddings
+* Handles flexible queries
 
 ---
 
-### ✅ 3. Troubleshooting Mode (Decision Flow)
+### ✅ AI Response Generation
 
-* Detects hardware issues (e.g., “not working”)
-* Switches to interactive debugging mode
-* Asks step-by-step diagnostic questions
-* Provides deterministic fixes
-
----
-
-### ✅ 4. Hybrid Intelligence
-
-* Flow-based logic → reliable debugging
-* RAG + LLM → flexible reasoning
+* Uses LLM with strict grounding
+* Prevents hallucination
+* Produces structured, step-based answers
 
 ---
 
-## 🏗️ Architecture
+### ✅ Troubleshooting Mode
 
-```
-User Query
-   ↓
+* Detects hardware issues
+* Guides users via step-by-step diagnostic questions
+* Maintains session state
+
+---
+
+## 🏗️ Updated Architecture
+
+
+Frontend (Browser / test.html)
+        ↓
+ngrok (Public URL Tunnel)
+        ↓
+Local Node.js Server (Express API)
+        ↓
 Intent Detection
-   ↓
-├── Troubleshooting Flow (if issue detected)
-│      ↓
-│   Step-by-step guided debugging
+        ↓
+├── Troubleshooting Flow Engine
+│        ↓
+│    Step-by-step guided debugging
 │
-└── RAG Pipeline (default)
-       ↓
-   Embedding (OpenAI)
-       ↓
-   FAISS Vector Search
-       ↓
-   Top-K Context Retrieval
-       ↓
-   LLM (grounded response)
-       ↓
-   Structured Answer
-```
+└── RAG Pipeline
+         ↓
+     Embedding (OpenAI)
+         ↓
+     FAISS Vector Search
+         ↓
+     Top Context Retrieval
+         ↓
+     LLM Response Generation
+
+---
+
+## 🔄 Data Flow
+
+User Input (Browser UI)
+        ↓
+HTTP POST /chat (via ngrok)
+        ↓
+Node.js Server (server.js)
+        ↓
+Check Session State
+        ↓
+Intent Detection
+
+IF troubleshooting:
+    → Ask next question / return solution
+
+ELSE:
+    → Retrieve relevant data (RAG)
+    → Generate response (LLM)
+
+        ↓
+JSON Response
+        ↓
+Frontend displays output
 
 ---
 
 ## 📂 Project Structure
 
-```
+
 pinwheel-rag/
-├── data/                  # Knowledge base (robotics issues)
-├── scripts/               # Build + test scripts
-│   ├── buildIndex.js
-│   ├── runTest.js
+├── server.js              # Express API server
+├── data/                  # Knowledge base
+├── scripts/
+│   └── buildIndex.js      # Builds FAISS index
 ├── src/
-│   ├── rag/               # RAG pipeline
-│   │   ├── embedder.js
-│   │   ├── retriever.js
-│   │   ├── indexManager.js
-│   ├── llm/               # LLM integration
-│   │   ├── openaiClient.js
-│   │   ├── generateResponse.js
-│   ├── troubleshooting/   # Decision flow engine
-│   │   ├── flows.js
-│   │   ├── engine.js
-│   │   ├── detect.js
+│   ├── rag/               # Retrieval pipeline
+│   ├── llm/               # OpenAI integration
+│   ├── troubleshooting/   # Flow engine
+├── test.html              # Simple frontend for testing API
 ├── .env
 ├── package.json
-```
+
 
 ---
 
-## ⚙️ Setup Instructions
+## ⚙️ Setup & Run
 
-### 1. Clone Repository
-
-```bash
-git clone <your-repo-url>
-cd pinwheel-rag
-```
-
----
-
-### 2. Install Dependencies
+### 1. Install dependencies
 
 ```bash
 npm install
-```
 
 ---
 
-### 3. Add Environment Variables
-
-Create `.env` file:
-
-```env
-OPENAI_API_KEY=your_api_key_here
-```
-
----
-
-### 4. Add Knowledge Base
-
-Edit:
-
-```
-data/knowledge.json
-```
-
-Example:
-
-```json
-[
-  {
-    "id": 1,
-    "problem": "Robot not moving",
-    "keywords": ["motor not working", "wheels not rotating"],
-    "solution": "Check battery voltage and verify L298N connections."
-  }
-]
-```
-
----
-
-## ▶️ Run & Test
-
-### Run Full System
+### 2. Start backend server
 
 ```bash
-node scripts/runTest.js
+node server.js
 ```
 
 ---
 
-### Example Flow
+### 3. Start ngrok tunnel
 
-#### Input:
-
-```
-My robot is not moving
+```bash
+ngrok http 3000
 ```
 
-#### Output:
+---
 
-* Either:
+### 4. Update test.html
 
-  * Troubleshooting mode (interactive)
-* Or:
+Replace API URL with:
 
-  * AI-generated structured solution
+```text
+https://your-ngrok-url/chat
+```
 
 ---
 
-## 🧪 Current Capabilities
+### 5. Run frontend test
 
-* ✔ Embedding-based semantic search
-* ✔ FAISS vector retrieval (in-memory)
-* ✔ Structured robotics knowledge
-* ✔ Grounded LLM responses (no hallucination)
-* ✔ Intent-based troubleshooting mode
-* ✔ CLI interaction for testing
+```bash
+npx serve
+```
 
----
+Open browser:
 
-## ⚠️ Limitations (Current)
+```
+http://localhost:<port>
+```
 
-* FAISS is in-memory (no persistence yet)
-* Limited dataset (manual entries)
-* Intent detection is rule-based
-* Single-turn conversation (no memory)
+Click **"Test Robot API"**
 
 ---
 
-## 🔮 Next Steps / Roadmap
+## 🧪 Testing
 
-### 🔥 High Priority
+### Example Request
 
-* [ ] Persistent vector database (Pinecone / FAISS disk)
+```json
+{
+  "message": "My robot is not moving",
+  "sessionId": "test123"
+}
+```
+
+---
+
+### Example Response
+
+```json
+{
+  "reply": "Is the battery connected and powered ON?"
+}
+```
+
+---
+
+## ⚠️ Current Limitations
+
+* ngrok URL changes on restart
+* FAISS is in-memory (not persistent)
+* Basic UI (test.html only)
+* Rule-based intent detection
+
+---
+
+## 🔮 Next Steps
+
+### 🚀 High Priority
+
+* [ ] Build full chat UI (message history, input box)
+* [ ] Add yes/no buttons for troubleshooting
 * [ ] Improve intent detection (LLM-based)
-* [ ] Add conversation memory
 
 ---
 
-### 🧠 Intelligence Upgrades
+### 🧠 Backend Improvements
 
-* [ ] Adaptive troubleshooting (LLM-guided questions)
-* [ ] Multi-step reasoning chains
-* [ ] Context ranking improvements
-
----
-
-### 🧑‍🏫 Education Features
-
-* [ ] Teaching mode (concept explanations)
-* [ ] Arduino code generation
-* [ ] Lesson planning assistant
+* [ ] Persistent vector DB (Pinecone / Supabase)
+* [ ] Multi-turn conversation memory
+* [ ] Better context ranking
 
 ---
 
-### 🌐 Productization
+### 🌐 Deployment
 
-* [ ] Web UI (chat interface)
-* [ ] API endpoints
-* [ ] User session tracking
-* [ ] Analytics dashboard
+* [ ] Move backend to AWS / Railway
+* [ ] Connect frontend (Vercel)
+* [ ] Add API authentication
 
 ---
 
 ## 💡 Vision
 
-To build a **scalable AI-powered robotics assistant** that can:
+To create a **scalable robotics assistant** that:
 
-* Support teachers in classrooms
-* Help students debug hardware
-* Act as a digital robotics mentor
+* Helps teachers conduct classes
+* Guides students in debugging hardware
+* Acts as an AI mentor for robotics learning
 
 ---
 
 ## 👨‍💻 Author
 
-Built as part of **Pinwheel Robotics initiative**
-Focused on practical STEM learning and innovation.
+Built under **Pinwheel Robotics initiative**
+Focused on hands-on STEM education and AI integration.
 
 ---

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Test API</h2>
+<button onclick="callAPI()">Test Robot API</button>
+
+<pre id="output"></pre>
+
+<script>
+function callAPI() {
+  fetch("https://licking-unstitch-hardly.ngrok-free.dev/chat", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      message: "My robot is not moving",
+      sessionId: "test123"
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+  })
+  .catch(err => {
+    document.getElementById("output").innerText = err;
+  });
+}
+</script>
+
+</body>
+</html>

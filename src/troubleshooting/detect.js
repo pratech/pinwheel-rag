@@ -10,7 +10,7 @@ export function detectIntent(query) {
     q.includes("issue") ||
     q.includes("error")
   ) {
-    return "robot_not_moving";
+    return "troubleshoot";
   }
 
   return null;

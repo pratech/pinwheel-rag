@@ -43,19 +43,32 @@ app.post("/chat", async (req, res) => {
     }
   }
 
-  // 🔍 Detect new intent
-  const intent = detectIntent(message);
+  // 🔍 Detect intent
+const intent = detectIntent(message);
 
-  if (intent) {
-    const flow = startFlow(intent);
+// 🔎 Always run RAG
+const results = await retrieve(message);
+const topResult = results[0];
 
-    sessions[sessionId] = {
-      flow: intent,
-      current: flow.current
-    };
+if (intent === "troubleshoot" && topResult) {
 
-    return res.json({ reply: flow.message });
+  const flowName = topResult.problem; // 🔥 KEY FIX
+
+  const flow = startFlow(flowName);
+  if (!flow || flow.error) {
+    return res.json({
+      reply: topResult.solution || "No troubleshooting flow available."
+    });
   }
+
+
+  sessions[sessionId] = {
+    flow: flowName,
+    current: flow.current
+  };
+
+  return res.json({ reply: flow.message });
+}
 
   // 🧠 RAG mode
   const contexts = await retrieve(message);

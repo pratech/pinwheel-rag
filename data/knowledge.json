@@ -3,18 +3,181 @@
     "id": 1,
     "problem": "Robot not moving",
     "keywords": ["motor not working", "robot not moving", "wheels not rotating"],
-    "solution": "Check battery voltage and verify L298N connections."
+    "solution": "Check battery voltage, ensure L293D connections are correct, and verify motor wiring."
   },
   {
     "id": 2,
-    "problem": "Bluetooth not connecting",
-    "keywords": ["bluetooth issue", "hc05 not pairing"],
-    "solution": "Check HC-05 connections and pairing mode."
+    "problem": "Battery draining quickly",
+    "keywords": ["battery low", "battery draining", "short battery life"],
+    "solution": "Check for short circuits, ensure motors are not overloaded, and verify Li-Ion battery health."
   },
   {
     "id": 3,
     "problem": "Line follower not detecting line",
-    "keywords": ["sensor issue", "line not detected"],
-    "solution": "Adjust threshold and recalibrate sensors."
+    "keywords": ["sensor issue", "line not detected", "ir sensor not working"],
+    "solution": "Adjust sensor threshold using calibration potentiometer and ensure proper alignment with surface."
+  },
+  {
+    "id": 4,
+    "problem": "Robot resets when changing direction",
+    "keywords": ["brownout", "arduino reset", "reverse direction issue"],
+    "solution": "This is likely due to reverse current causing voltage drop. Add capacitors across motor terminals or use a proper power supply separation."
+  },
+  {
+    "id": 5,
+    "problem": "Motors running slowly",
+    "keywords": ["slow motor", "low speed", "weak movement"],
+    "solution": "Check battery voltage and ensure Li-Ion battery is fully charged. Inspect motor driver output."
+  },
+  {
+    "id": 6,
+    "problem": "One wheel not rotating",
+    "keywords": ["single motor issue", "wheel stuck", "motor failure"],
+    "solution": "Check BO motor wiring, ensure no gear jam, and verify output from L293D channel."
+  },
+  {
+    "id": 7,
+    "problem": "Robot moving in wrong direction",
+    "keywords": ["direction issue", "reverse motion", "wrong wiring"],
+    "solution": "Check motor polarity connections and verify control signals from Arduino UNO."
+  },
+  {
+    "id": 8,
+    "problem": "IR sensor always detecting object",
+    "keywords": ["false detection", "sensor always high", "ir noise"],
+    "solution": "Recalibrate the IR sensor threshold and reduce ambient light interference."
+  },
+  {
+    "id": 9,
+    "problem": "IR sensor not detecting obstacle",
+    "keywords": ["sensor not working", "no detection", "ir failure"],
+    "solution": "Check sensor wiring, ensure proper voltage supply, and recalibrate sensitivity."
+  },
+  {
+    "id": 10,
+    "problem": "Arduino resetting randomly",
+    "keywords": ["random reset", "power issue", "voltage drop"],
+    "solution": "Ensure stable power supply, avoid powering motors and Arduino from same unstable source, and add decoupling capacitors."
+  },
+  {
+    "id": 11,
+    "problem": "Motor driver overheating",
+    "keywords": ["l293d heating", "driver hot", "overcurrent"],
+    "solution": "Reduce load on motors, ensure proper heat dissipation, and avoid drawing current beyond driver limits."
+  },
+  {
+    "id": 12,
+    "problem": "Robot not moving straight",
+    "keywords": ["uneven movement", "drift", "alignment issue"],
+    "solution": "Check differential drive balance, ensure both motors receive equal power, and inspect wheel alignment."
+  },
+  {
+    "id": 13,
+    "problem": "Gear noise or jerky motion",
+    "keywords": ["gear noise", "jerky motor", "bo motor issue"],
+    "solution": "Inspect BO motor gears for wear or obstruction and ensure smooth rotation."
+  },
+  {
+    "id": 14,
+    "problem": "Robot stops under load",
+    "keywords": ["stall", "load issue", "motor stopping"],
+    "solution": "Check battery capacity and ensure motors are not overloaded beyond torque limits."
+  },
+  {
+    "id": 15,
+    "problem": "Sensor calibration not working",
+    "keywords": ["calibration issue", "threshold not changing"],
+    "solution": "Verify potentiometer on sensor module and ensure proper power supply to sensor."
+  },
+
+  {
+    "id": 101,
+    "problem": "What does this robot program do?",
+    "keywords": ["program purpose", "what is this code", "line follower logic"],
+    "solution": "This program implements a PID-based line follower robot with auto-calibration of IR sensors. It reads sensor values, calculates error, and adjusts motor speed accordingly."
+  },
+  {
+    "id": 102,
+    "problem": "How does auto calibration work?",
+    "keywords": ["auto calibration", "sensor calibration", "calibration process"],
+    "solution": "When calibration mode is triggered (via switch), the robot reads sensor values over white and black surfaces and stores threshold values in EEPROM for future use."
+  },
+  {
+    "id": 103,
+    "problem": "Which pins are used for sensors?",
+    "keywords": ["sensor pins", "IR sensor pins", "analog inputs"],
+    "solution": "IR sensors are connected to Arduino analog pins A0 to A4, which continuously read reflectance values for line detection."
+  },
+  {
+    "id": 104,
+    "problem": "How are motors controlled?",
+    "keywords": ["motor control", "l293d pins", "motor driver"],
+    "solution": "Motors are controlled using L293D motor driver connected to PWM pins (like 3, 5, 6, 9). Speed is adjusted using PWM signals based on PID output."
+  },
+  {
+    "id": 105,
+    "problem": "What is PID in this program?",
+    "keywords": ["pid control", "kp ki kd", "line follower pid"],
+    "solution": "PID (Proportional, Integral, Derivative) control is used to calculate correction based on error between current position and desired line position, improving stability and smooth movement."
+  },
+  {
+    "id": 106,
+    "problem": "How is error calculated?",
+    "keywords": ["error calculation", "line position error", "sensor weighting"],
+    "solution": "Error is calculated based on sensor readings, typically using weighted average of sensor values to determine deviation from the center of the line."
+  },
+  {
+    "id": 107,
+    "problem": "What happens during line detection?",
+    "keywords": ["line detection", "black line white surface", "sensor threshold"],
+    "solution": "Sensors detect reflectance differences between line and surface. Based on threshold values, the robot determines whether it is on the line or off-track."
+  },
+  {
+    "id": 108,
+    "problem": "How is EEPROM used?",
+    "keywords": ["eeprom usage", "store calibration", "persistent memory"],
+    "solution": "EEPROM is used to store calibrated threshold values so that calibration does not need to be repeated after power reset."
+  },
+  {
+    "id": 109,
+    "problem": "How is calibration triggered?",
+    "keywords": ["calibration switch", "trigger calibration", "button input"],
+    "solution": "Calibration mode is triggered using a switch connected to a digital pin. When pressed for a few seconds, the robot enters calibration mode."
+  },
+  {
+    "id": 110,
+    "problem": "What does the LED indicate?",
+    "keywords": ["led indicator", "calibration led", "status led"],
+    "solution": "An LED connected to a digital pin turns ON during calibration mode to indicate that the system is recording sensor values."
+  },
+  {
+    "id": 111,
+    "problem": "How does the robot follow the line?",
+    "keywords": ["line following logic", "movement control", "correction"],
+    "solution": "The robot reads sensor inputs, calculates error, applies PID correction, and adjusts motor speeds to stay aligned with the line."
+  },
+  {
+    "id": 112,
+    "problem": "What happens if sensors are not calibrated?",
+    "keywords": ["no calibration", "wrong detection", "sensor issue"],
+    "solution": "If sensors are not calibrated, the robot may fail to detect the line correctly, leading to erratic movement or loss of track."
+  },
+  {
+    "id": 113,
+    "problem": "How is white/black detection handled?",
+    "keywords": ["white line black surface", "black line white surface", "mode switch"],
+    "solution": "A DIP switch determines detection mode. Depending on its state, the robot interprets sensor readings as either black line on white surface or vice versa."
+  },
+  {
+    "id": 114,
+    "problem": "Why is PWM used for motors?",
+    "keywords": ["pwm motor control", "speed control", "motor speed"],
+    "solution": "PWM allows smooth control of motor speed by varying duty cycle, enabling precise adjustments based on PID correction."
+  },
+  {
+    "id": 115,
+    "problem": "What causes unstable movement?",
+    "keywords": ["unstable robot", "oscillation", "pid tuning"],
+    "solution": "Improper PID tuning (incorrect Kp, Ki, Kd values) can cause oscillations or unstable movement. Fine-tuning these parameters improves performance."
   }
 ]

@@ -11,9 +11,11 @@ function start() {
   });
 
   setTimeout(() => {
-    console.log("🌐 Starting ngrok...");
+    //console.log("🌐 Starting ngrok...");
+    console.log("🌐 Starting cloudflared...");
 
-    const ngrokProcess = spawn("ngrok", ["http", PORT], {
+    //const ngrokProcess = spawn("ngrok", ["http", PORT], {
+    const cloudflaredProcess = spawn("cloudflared", ["tunnel", "--url", `http://localhost:${PORT}`], {
       stdio: "inherit",
       shell: true
     });
@@ -22,8 +24,8 @@ function start() {
       console.log("\n🛑 Shutting down...");
 
       serverProcess.kill();
-      ngrokProcess.kill();
-
+      //ngrokProcess.kill();
+      cloudflaredProcess.kill();
       process.exit();
     });
 

@@ -1,35 +1,27 @@
 import { spawn } from "child_process";
 
-const PORT = 3000;
-
 function start() {
   console.log("🚀 Starting backend server...");
 
-  const serverProcess = spawn("node", ["server.js"], {
-    stdio: "inherit",
+  const server = spawn("node", ["server.js"], {
+    stdio: "pipe",
     shell: true
   });
 
-  setTimeout(() => {
-    //console.log("🌐 Starting ngrok...");
-    console.log("🌐 Starting cloudflared...");
+  server.stdout.on("data", (data) => {
+    const output = data.toString();
+    console.log(output);
 
-    //const ngrokProcess = spawn("ngrok", ["http", PORT], {
-    const cloudflaredProcess = spawn("cloudflared", ["tunnel", "--url", `http://localhost:${PORT}`], {
-      stdio: "inherit",
-      shell: true
-    });
+    // 🔥 Start tunnel ONLY after server is ready
+    if (output.includes("Server running")) {
+      console.log("🌐 Starting Cloudflare Tunnel...");
 
-    process.on("SIGINT", () => {
-      console.log("\n🛑 Shutting down...");
-
-      serverProcess.kill();
-      //ngrokProcess.kill();
-      cloudflaredProcess.kill();
-      process.exit();
-    });
-
-  }, 3000);
+      spawn("cloudflared", ["tunnel", "run", "pinwheel-rag"], {
+        stdio: "inherit",
+        shell: true
+      });
+    }
+  });
 }
 
 start();

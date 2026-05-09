@@ -8,7 +8,14 @@ import { detectIntent } from "./src/troubleshooting/detect.js";
 import { startFlow, nextStep } from "./src/troubleshooting/engine.js";
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type"]
+}));
+
+// 🔥 Handle preflight explicitly
+//app.options("*", cors());
 app.use(express.json());
 
 let initialized = false;
